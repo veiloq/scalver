@@ -1,9 +1,9 @@
-# Scalable Calendar Versioning v1.2025.1
+# Scalable Calendar Versioning v1.2025.2
 
-We can flexibly “stretch” calendar versioning (CalVer) to meet different release frequencies. You can start with yearly (`vMAJOR.YYYY.PATCH`), then switch to monthly (`vMAJOR.YYYYMM.PATCH`), and even go daily (`vMAJOR.YYYYMMDD.PATCH`). This approach remains compatible with SemVer and Go’s module rules, as long as you treat the date part (`YYYY`, `YYYYMM`, or `YYYYMMDD`) as your “MINOR” number and handle `PATCH` normally.
+`vMAJOR.YYYY.PATCH` → `vMAJOR.YYYYMM.PATCH` → `vMAJOR.YYYYMMDD.PATCH`
 
 ## 1. Problem Statement
-Sometimes you need a CalVer format that adapts to changing release frequencies. For example, you might begin with yearly releases (e.g., `v1.2025.0`) but later require more frequent updates—monthly (e.g., `v1.202503.0`), daily (e.g., `v1.20250301.0`), etc. Having an adaptable versioning scheme is crucial for managing different release cadences.
+Sometimes you need a CalVer format that adapts to changing release frequencies. For example, you might begin with yearly releases (e.g., `v1.2025.0`) but later require more frequent updates — monthly (e.g., `v1.202503.0`), daily (e.g., `v1.20250301.0`), etc. Having an adaptable versioning scheme is crucial for managing different release cadences.
 
 ## 2. SemVer Compatibility
 - **MAJOR**: Increment only for breaking changes. In Go, this means also updating the module path (e.g., `module example.com/v2`).
@@ -15,6 +15,8 @@ Sometimes you need a CalVer format that adapts to changing release frequencies. 
   SemVer treats this field as a plain integer. All formats remain compatible with [Semantic Versioning 2.0](https://semver.org/) and Go’s module versioning.
 - **PATCH**: Increments for each stable release within the chosen date period.
   > **Typical Scenario**: Going from `v1.2025.1` (yearly) to `v1.202503.0` (monthly) is usually fine, because `202503` is larger than `2025`. But if you ever have a conflict (e.g., a weird prior version like `v1.999999.0`), bumping MAJOR might be the simplest fix.
+
+We can flexibly “stretch” calendar versioning (CalVer) to meet different release frequencies. You can start with yearly (`vMAJOR.YYYY.PATCH`), then switch to monthly (`vMAJOR.YYYYMM.PATCH`), and even go daily (`vMAJOR.YYYYMMDD.PATCH`). This approach remains compatible with SemVer and Go’s module rules, as long as you treat the date part (`YYYY`, `YYYYMM`, or `YYYYMMDD`) as your “MINOR” number and handle `PATCH` normally.
 
 ## 3. Yearly Format
 - `v1.2025.0` → The first stable release in 2025.
