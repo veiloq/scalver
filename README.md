@@ -1,6 +1,11 @@
-# Scalable Calendar Versioning v1.2025.2
+# Scalable Calendar Versioning v1.2025.1-beta
 
-`vMAJOR.YYYY.PATCH` → `vMAJOR.YYYYMM.PATCH` → `vMAJOR.YYYYMMDD.PATCH`
+TLDFR: `vMAJOR.YYYY.PATCH` → `vMAJOR.YYYYMM.PATCH` → `vMAJOR.YYYYMMDD.PATCH`
+
+- `v1.2025.0` < `v1.2025.1` < `c1.2025.2`
+- `v1.202503.0` < `v1.202503.1` < `c1.202503.2`
+- `v1.2025.0` < `v1.202503.0`  < `v1.20250301.0` 
+
 
 ## 1. Problem Statement
 Sometimes you need a CalVer format that adapts to changing release frequencies. For example, you might begin with yearly releases (e.g., `v1.2025.0`) but later require more frequent updates — monthly (e.g., `v1.202503.0`), daily (e.g., `v1.20250301.0`), etc. Having an adaptable versioning scheme is crucial for managing different release cadences.
