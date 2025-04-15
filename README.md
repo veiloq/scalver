@@ -1,4 +1,4 @@
-# Extended Calendar Versioning (Yearly/Monthly/Daily) v1.2025.1
+# Scalable Calendar Versioning (Yearly/Monthly/Daily) v1.2025.1
 
 We can flexibly “stretch” calendar versioning (CalVer) to meet different release frequencies. You can start with yearly (`vMAJOR.YYYY.PATCH`), then switch to monthly (`vMAJOR.YYYYMM.PATCH`), and even go daily (`vMAJOR.YYYYMMDD.PATCH`). This approach remains compatible with SemVer and Go’s module rules, as long as you treat the date part (`YYYY`, `YYYYMM`, or `YYYYMMDD`) as your “MINOR” number and handle `PATCH` normally.
 
