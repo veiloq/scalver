@@ -5,9 +5,7 @@
 * 1.2025.0 < 1.2025.1 < 1.2025.2  
 * 1.202503.0 < 1.202503.1 < 1.202503.2  
 * 1.2025.0 < 1.202503.0 < 1.20250301.0  
-* 1.2025.0 < 1.2026.1 < 2.2026.0  
-* 1.20250410.0 < 2.2026.1 < v3.20270310.0  
-* v1.2025.0 < v1.2025.1 < v1.2025.2 (with `v` tag)  
+* 1.20250410.0 < 2.2026.1 < 3.20260310.0  
 
 Format progression → `MAJOR.YYYY.PATCH` → `MAJOR.YYYYMM.PATCH` → `MAJOR.YYYYMMDD.PATCH`
 
@@ -76,4 +74,4 @@ Within a given **MAJOR** line, the **DATE** segment may **only stay the same len
 | `1.20250301.4`    | `2.2026.0`       | ✅ Yes   | MAJOR bump resets DATE to Yearly   |
 | `2.2026.0`        | `2.202612.0`     | ✅ Yes   | Yearly → Monthly inside MAJOR‑2    |
 
-With these rules you can *scale up* release granularity indefinitely while preserving clear history and complete **SemVer compatibility**.
+You can *scale up* release granularity indefinitely while preserving clear history and complete **SemVer compatibility**.
