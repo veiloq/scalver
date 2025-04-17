@@ -58,9 +58,9 @@ Projects accelerate from annual releases to monthly sprints and daily hot‑fixe
 * `1.999999.0` → declares MAJOR 1 as frozen / EOL  
 * `2.2026.0` → next MAJOR continues normally  
 
-## 10. Date‑Only‑Grows (DOG) Rule
+## 10. Date‑Only‑Grows (DOG) Rule
 
-Within a given **MAJOR** line, the **DATE** segment may **only stay the same length or grow** (`YYYY` → `YYYYMM` → `YYYYMMDD`).
+Within a given **MAJOR** line, the **DATE** segment may **only stay the same length or grow**: `YYYY` → `YYYYMM` → `YYYYMMDD`.
 
 > If you ever need to publish a version whose DATE would be *shorter*, **bump MAJOR first** and
 > start over at the cadence you want. This guarantees monotonic numeric ordering and preserves
