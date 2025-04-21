@@ -1,5 +1,7 @@
 # **Scalable Calendar Versioning Specification v1.2025.5**
 
+TLDR: `1.2025.0 < 1.20250323.0 < 2.2025.0 < 2.20250301.0`
+
 ## **1\. Purpose & Essence**
 
 ScalVer is a **calendar‑aware, SemVer‑compatible and extendable versioning scheme** expressed as
@@ -15,19 +17,6 @@ where the `DATE` segment may lengthen over time **within a MAJOR line**: `YYYY` 
 * `<DATE>` – `YYYY`, `YYYYMM`, or `YYYYMMDD` in **UTC**; extends as release cadence accelerates or shrink with a new MAJOR release.
 
 * `<PATCH>` – incremental, backward‑compatible fixes within the same DATE window.
-
-### **Minimal Grammar (EBNF)**
-
-```
-MAJOR = digit *digit  ; 0 = volatile, 1+ = stable API
-DATE    = YYYY | YYYYMM | YYYYMMDD      ; UTC calendar date
-PATCH   = non‑negative digit *digit
-PRE     = ( "-" identifier *( "." identifier ) ) ; optional
-BUILD   = ( "+" identifier *( "." identifier ) ) ; optional
-version = MAJOR "." DATE "." PATCH [ PRE ] [ BUILD ]
-```
-
-*identifier* follows [SemVer 2.0 rules](https://semver.org/).
 
 ---
 
@@ -55,6 +44,19 @@ version = MAJOR "." DATE "." PATCH [ PRE ] [ BUILD ]
 **Date‑Only‑Grows (DOG):** within any single MAJOR line the DATE can stay the same length or grow, but **never shrink**.
 
 ¹**Y10K note:** ScalVer’s ordering logic continues to work for years beyond 9999. The reference grammar intentionally limits YYYY to four digits for ISO‑8601 clarity and broad tooling support, but the scheme is formally 100% compatible with longer year fields and can be widened whenever ecosystems catch up.
+
+### **Minimal Grammar (EBNF)**
+
+```
+MAJOR = digit *digit  ; 0 = volatile, 1+ = stable API
+DATE    = YYYY | YYYYMM | YYYYMMDD      ; UTC calendar date
+PATCH   = non‑negative digit *digit
+PRE     = ( "-" identifier *( "." identifier ) ) ; optional
+BUILD   = ( "+" identifier *( "." identifier ) ) ; optional
+version = MAJOR "." DATE "." PATCH [ PRE ] [ BUILD ]
+```
+
+*identifier* follows [SemVer 2.0 rules](https://semver.org/).
 
 ---
 
