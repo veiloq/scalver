@@ -72,12 +72,12 @@ version = MAJOR "." DATE "." PATCH [ PRE ] [ BUILD ]
 | Daily | `1.20250301.0` | First 1 Mar 2025 release |
 | Daily | `1.20250301.7` | Eighth 1 Mar 2025 release |
 
-Progression path: `YYYY` → `YYYYMM` → `YYYYMMDD`.
+> Progression path: `YYYY` → `YYYYMM` → `YYYYMMDD`.
 
 ---
 
-MAJOR = 0 → Alpha, Experiment, PoC (volatile)
-MAJOR ≥ 1 → Stable Release (guarantees apply; breakage = new major)
+- MAJOR = 0 ⇒ Alpha, Experiment, PoC (volatile)
+- MAJOR ≥ 1 ⇒ Stable Release (guarantees apply; breakage = new major)
 
 ---
 
@@ -166,9 +166,10 @@ ScalVer migration is expected to be trivial in most of the cases, since every Sc
 
 > **Note** Option B (incrementing MAJOR) may be unacceptable in ecosystems where MAJOR is tightly coupled to compatibility promises or installer heuristics. Prefer widening the DATE slot whenever possible; choose a MAJOR bump only when all stakeholders agree it won’t disrupt dependency resolution policies.
 
-### 9.2 Migration Examples
+### 9.2  SemVer → ScalVer Example
 
-| Format                         | New Variant      | Length¹ | Δ vs `1.23.5` | Label                                                   |
+
+| Format                         | New Variant      | Length¹ | Δ vs `1.23.5` | Conversion                                             |
 |--------------------------------|------------------|---------|--------------|---------------------------------------------------------|
 | `xMAJOR.YYYY.xPATCH`           | `1.2025.5`       | 8       | +2           | Major & Patch preserved; **Year replaces Minor**        |
 | `xMAJOR.YYYYMM.xPATCH`         | `1.202504.5`     | 10      | +4           | Major & Patch preserved; **Year‑Month replaces Minor**  |
