@@ -1,4 +1,4 @@
-# **Scalable Calendar Versioning (ScalVer) Specification v1.2025.5**
+# **Scalable Calendar Versioning Specification v1.2025.5**
 
 ## **1\. Purpose & Essence**
 
@@ -31,7 +31,7 @@ version = MAJOR "." DATE "." PATCH [ PRE ] [ BUILD ]
 
 ---
 
-## **2\. Why ScalVer?**
+## **2\. Why ScalVer (Scalable Calendar Versioning)?**
 
 \~ It’s a simple adaptation of **CalVer** that remains fully compatible with **SemVer**, but lets you switch release frequencies without messing up version ordering.
 
