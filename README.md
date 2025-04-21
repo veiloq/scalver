@@ -1,6 +1,6 @@
 # **Scalable Calendar Versioning Specification v1.2025.5**
 
-TLDR: `1.2025.0 < 1.20250323.0 < 2.2025.0 < 2.20250301.0`
+TLDR: `1.2025.5 < 1.20250323.0 < 2.2025.0 < 2.202503.1 < 2.20250125.1`
 
 ## **1\. Purpose & Essence**
 
