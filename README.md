@@ -2,13 +2,13 @@
 
 ## **1\. Purpose & Essence**
 
-ScalVer is a **calendar‑aware, SemVer‑compatible and extendable versioning scheme** expressed as `MAJOR.DATE.PATCH`
+ScalVer is a **calendar‑aware, SemVer‑compatible and extendable versioning scheme** expressed as
 
 ```
 <MAJOR>.<DATE>.<PATCH>
 ```
 
-where the `DATE` segment may lengthen over time **within a MAJOR line**: `YYYY` → `YYYYMM` → `YYYYMMDD`.
+where the `DATE` segment may lengthen over time **within a MAJOR line**: `YYYY` → `YYYYMM` → `YYYYMMDD` (`YYYY[MM[DD]]`)
 
 * `<MAJOR>` – identical to SemVer MAJOR, bumped for breaking changes **or** whenever the DATE segment would need to shrink.
 
@@ -35,10 +35,10 @@ version = MAJOR "." DATE "." PATCH [ PRE ] [ BUILD ]
 
 \~ It’s a simple adaptation of **CalVer** that remains fully compatible with **SemVer**, but lets you switch release frequencies without messing up version ordering.
 
-* **Built‑in timestamp** → each tag encodes its release date (ISO‑8601 UTC stamp). `X.DATE.Z`
-* **Break‑age transparency** → MAJOR still flags incompatible API shifts. `MAJOR.Y.Z`
-* **Frequency‑proof** extendable format → one schema scales from annual releases to rapid daily drops. `X.YYYY[MM[DD]].Z`
-* **SemVer Compatible**  → every ScalVer tag is syntactically valid SemVer, so existing tooling (CI/CD, package managers, release dashboards) works unchanged. `MAJOR.YYYY[MM[DD]].PATCH`
+* **Built‑in timestamp** → each tag encodes its release date (ISO‑8601 UTC stamp).
+* **Break‑age transparency** → MAJOR still flags incompatible API shifts.
+* **Frequency‑proof** extendable format → one schema scales from annual releases to rapid daily drops.
+* **SemVer Compatible**  → every ScalVer tag is syntactically valid SemVer, so existing tooling (CI/CD, package managers, release dashboards) works unchanged.
 
 ---
 
