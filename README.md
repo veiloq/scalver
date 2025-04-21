@@ -1,4 +1,4 @@
-# **ScalVer Specification v1.2025.4**
+# **Scalable Calendar Versioning Specification v1.2025.5**
 
 ## **1\. Purpose & Essence**
 
@@ -19,7 +19,7 @@ where the `DATE` segment may lengthen over time **within a MAJOR line**: `YYYY` 
 ### **Minimal Grammar (EBNF)**
 
 ```
-MAJOR   = non‑zero digit *digit
+MAJOR = digit *digit  ; 0 = volatile alpha, 1+ = stable API
 DATE    = YYYY | YYYYMM | YYYYMMDD      ; UTC calendar date
 PATCH   = non‑negative digit *digit
 PRE     = ( "-" identifier *( "." identifier ) ) ; optional
@@ -31,7 +31,7 @@ version = MAJOR "." DATE "." PATCH [ PRE ] [ BUILD ]
 
 ---
 
-## **2\. Why ScalVer?**
+## **2\. Why ScalVer (Scalable Calendar Versioning)?**
 
 \~ It’s a simple adaptation of **CalVer** that remains fully compatible with **SemVer**, but lets you switch release frequencies without messing up version ordering.
 
@@ -63,6 +63,7 @@ version = MAJOR "." DATE "." PATCH [ PRE ] [ BUILD ]
 
 | Cadence | Example tag | Meaning |
 | ----- | ----- | ----- |
+| Yearly | `0.2025.0` | First 2025 alpha |
 | Yearly | `1.2025.0` | First 2025 stable release |
 | Yearly | `1.2025.3` | Fourth 2025 patch |
 | Monthly | `1.202503.0` | First March 2025 release |
@@ -71,6 +72,11 @@ version = MAJOR "." DATE "." PATCH [ PRE ] [ BUILD ]
 | Daily | `1.20250301.7` | Eighth 1 Mar 2025 release |
 
 Progression path: `YYYY` → `YYYYMM` → `YYYYMMDD`.
+
+---
+
+MAJOR = 0 → Alpha Track (volatile)
+MAJOR ≥ 1 → Stable Track (guarantees apply; breakage = new major)
 
 ---
 
