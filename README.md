@@ -51,18 +51,20 @@ version = MAJOR "." DATE "." PATCH [ PRE ] [ BUILD ]
 | **DATE** | MINOR | May stay the same length or grow from `YYYY` → `YYYYMM` → `YYYYMMDD` |
 | **PATCH** | PATCH | Increment for safe, backward‑compatible releases within the same DATE |
 
-**Date‑Only‑Grows (DOG):** within any single MAJOR line the DATE can stay the same length or grow, but **never shrink**.¹
+**SemVer 2.0 Compatible:** Each ScalVer tag is a *syntactically valid* SemVer 2.0 version; the date sits in the position that vanilla SemVer calls “MINOR”, so standard parsers (`golang.org/x/mod/semver`, `npm‑semver`, Python `packaging.version`, Maven’s `ComparableVersion`, Cargo, etc.) order ScalVer releases correctly without modification¹
 
-¹ **Y10K note** – ScalVer comparisons remain valid with years \> 9999\. The reference grammar caps `YYYY` at four digits for ISO‑8601 readability and maximum tool compatibility, **but ScalVer is formally 100 % compatible** if you decide to extend the field or restart at `YYYY = 0000` after a MAJOR bump.
+**Date‑Only‑Grows (DOG):** within any single MAJOR line the DATE can stay the same length or grow, but **never shrink**.
+
+¹**Y10K note:** ScalVer’s ordering logic continues to work for years beyond 9999. The reference grammar intentionally limits YYYY to four digits for ISO‑8601 clarity and broad tooling support, but the scheme is formally 100% compatible with longer year fields and can be widened whenever ecosystems catch up.
 
 ---
 
 ## **4\. Release‑Cadence Examples**
 
-| Cadence | Example | Meaning |
+| Cadence | Example tag | Meaning |
 | ----- | ----- | ----- |
 | Yearly | `1.2025.0` | First 2025 stable release |
-| Yearly | `1.2025.3` | Fourth 2025 **patch** release |
+| Yearly | `1.2025.3` | Fourth 2025 patch |
 | Monthly | `1.202503.0` | First March 2025 release |
 | Monthly | `1.202503.2` | Third March 2025 release |
 | Daily | `1.20250301.0` | First 1 Mar 2025 release |
@@ -72,7 +74,31 @@ Progression path: `YYYY` → `YYYYMM` → `YYYYMMDD`.
 
 ---
 
-## **5\. Extended Semantics**
+## **5\. Transitions Examples**
+
+### **Table A – Allowed transitions *within the same MAJOR***
+
+| From | To | Δ DATE | Allowed? | Rationale |
+| ----- | ----- | ----- | ----- | ----- |
+| `1.2025.2` | `1.202503.0` | \+MM | ✓ Yes | Yearly → Monthly – DATE grows (`YYYY` → `YYYYMM`) |
+| `1.202503.3` | `1.20250301.0` | \+DD | ✓ Yes | Monthly → Daily – DATE grows (`YYYYMM` → `YYYYMMDD`) |
+| `1.20250301.4` | `1.20250301.5` | \= | ✓ Yes | Daily → Daily – PATCH \+1, DATE unchanged |
+| `1.202503.0` | `1.202503.1` | \= | ✓ Yes | Monthly → Monthly – PATCH \+1 |
+| `1.2025.0` | `1.2025.1` | \= | ✓ Yes | Yearly → Yearly – PATCH \+1 |
+
+### **Table B – Transitions that shrink DATE or require a MAJOR bump**
+
+| From | To | Δ DATE | Allowed without bump? | Correct fix / note |
+| ----- | ----- | ----- | ----- | ----- |
+| `1.20250301.4` | `1.2026.0` | –DD/MM | ✗ No | Bump MAJOR → `2.2026.0` |
+| `1.20250301.4` | `2.2026.0` | reset | ✓ Yes | MAJOR bump resets cadence |
+| `2.20261224.6` | `2.202612.7` | –DD | ✗ No | Keep daily cadence or bump MAJOR |
+
+*Date-Only-Grows: DATE cannot shrink inside the same MAJOR; a MAJOR bump resets the cadence.*
+
+---
+
+## **6\. Extended Semantics**
 
 *Pre‑release identifiers* follow SemVer precedence:
 
@@ -86,7 +112,7 @@ Progression path: `YYYY` → `YYYYMM` → `YYYYMMDD`.
 
 ---
 
-## **6\. End‑of‑Life (EOL) Markers**
+## **7\. End‑of‑Life (EOL) Markers**
 
 * `1.999999.0` – freezes the *entire* 1.x line (year upper‑bound \= 9999; 999 999 acts as sentinel)
 
@@ -94,7 +120,7 @@ Progression path: `YYYY` → `YYYYMM` → `YYYYMMDD`.
 
 ---
 
-## **7\. Migration Strategies**
+## **8\. Migration Strategies**
 
 * **Greenfield project** – start with `0.YYYY.0` internally; switch to `1.<current‑year>.0` at first public release
 
@@ -106,7 +132,7 @@ Progression path: `YYYY` → `YYYYMM` → `YYYYMMDD`.
 
 ---
 
-## **8\. Common Pitfalls & Remedies**
+## **9\. Common Pitfalls & Remedies**
 
 * Shrinking DATE inside a MAJOR line → **forbidden**; bump MAJOR first
 
@@ -118,7 +144,7 @@ Progression path: `YYYY` → `YYYYMM` → `YYYYMMDD`.
 
 ---
 
-## **9\. FAQ**
+## **10\. FAQ**
 
 * **Can I use ScalVer with Cargo / Maven / npm / Go / Python?** – Yes; all treat `<DATE>` as MINOR, so caret (`^`) and tilde (`~`) ranges still work unchanged.
 
