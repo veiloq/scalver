@@ -1,11 +1,5 @@
 # **Scalable Calendar Versioning Specification v1.2025.5**
 
-1. *SemVer‑compatible* `X.Y.Z`: every ScalVer tag is syntactically valid SemVer, so existing tooling (CI/CD, package managers, release dashboards) works unchanged.
-2. *Calendar‑aware* `X.DATE.Z`: the middle slot is an ISO‑8601 UTC stamp (`YYYY`, `YYYYMM`, or `YYYYMMDD`).
-3. *Extendable* `X.YYYY[MM[DD]].Z`: the date field can grow (year/month/day) or shrink with a new major release.
-
----
-
 ## **1\. Purpose & Essence**
 
 ScalVer is a **calendar‑aware, SemVer‑compatible and extendable versioning scheme** expressed as `MAJOR.DATE.PATCH`
@@ -16,18 +10,16 @@ ScalVer is a **calendar‑aware, SemVer‑compatible and extendable versioning s
 
 where the `DATE` segment may lengthen over time **within a MAJOR line**: `YYYY` → `YYYYMM` → `YYYYMMDD`.
 
-* `<MAJOR>` – identical to SemVer MAJOR, bumped for breaking changes **or** whenever the DATE segment would need to shrink
+* `<MAJOR>` – identical to SemVer MAJOR, bumped for breaking changes **or** whenever the DATE segment would need to shrink.
 
-* `<DATE>` – `YYYY`, `YYYYMM`, or `YYYYMMDD` in **UTC**; extends (never shrinks) as release cadence accelerates
+* `<DATE>` – `YYYY`, `YYYYMM`, or `YYYYMMDD` in **UTC**; extends as release cadence accelerates or shrink with a new MAJOR release.
 
-* `<PATCH>` – incremental, backward‑compatible fixes within the same DATE window
-
-“Scalable” means the date slot stretches with your pace: start at YYYY, zoom to YYYYMM, YYYYMMDD, or even YYYYMMDDhhmmss as releases accelerate—no tags ever become invalid and normal SemVer ordering still works.
+* `<PATCH>` – incremental, backward‑compatible fixes within the same DATE window.
 
 ### **Minimal Grammar (EBNF)**
 
 ```
-MAJOR = digit *digit  ; 0 = volatile alpha, 1+ = stable API
+MAJOR = digit *digit  ; 0 = volatile, 1+ = stable API
 DATE    = YYYY | YYYYMM | YYYYMMDD      ; UTC calendar date
 PATCH   = non‑negative digit *digit
 PRE     = ( "-" identifier *( "." identifier ) ) ; optional
@@ -43,13 +35,10 @@ version = MAJOR "." DATE "." PATCH [ PRE ] [ BUILD ]
 
 \~ It’s a simple adaptation of **CalVer** that remains fully compatible with **SemVer**, but lets you switch release frequencies without messing up version ordering.
 
-* **Temporal context** → every tag reveals its release window at a glance
-
-* **Break‑age transparency** → MAJOR still flags incompatible API shifts
-
-* **Single trajectory** → teams glide from yearly to monthly to daily without inventing new numbering schemes
-
-SemVer counts releases, ScalVer dates them — but both stay 100 % syntactically compatible, so your tools don’t notice the swap while your team gains instant calendar context.
+* **Built‑in timestamp** → each tag encodes its release date (ISO‑8601 UTC stamp). `X.DATE.Z`
+* **Break‑age transparency** → MAJOR still flags incompatible API shifts. `MAJOR.Y.Z`
+* **Frequency‑proof** extendable format → one schema scales from annual releases to rapid daily drops. `X.YYYY[MM[DD]].Z`
+* **SemVer Compatible**  → every ScalVer tag is syntactically valid SemVer, so existing tooling (CI/CD, package managers, release dashboards) works unchanged. `MAJOR.YYYY[MM[DD]].PATCH`
 
 ---
 
@@ -149,7 +138,6 @@ MAJOR ≥ 1 → Stable Release (guarantees apply; breakage = new major)
 ## **9. Migration**
 
 ScalVer migration is expected to be trivial in most of the cases, since every ScalVer tag is valid SemVer. The heavy lift is mostly *communication*.
-
 
 ### 9.1 Playbook
 
