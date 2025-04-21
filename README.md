@@ -106,40 +106,7 @@ Progression path: `YYYY` → `YYYYMM` → `YYYYMMDD`.
 
 ---
 
-## **8\. Automation Snippet (Git Hook)**
-
-```
-# Generate the next ScalVer tag for the current branch
-next_scalver() {
-    today=$(date -u +%Y%m%d)
-    IFS='.' read -r major date patch <<< "$1"
-
-    if [[ "$date" == "$today"* ]]; then
-        echo "${major}.${date}.$((patch + 1))"
-    else
-        echo "${major}.${today}.0"
-    fi
-}
-
-# Guard against shrinking DATE without MAJOR bump
-git_tag_guard() {
-    latest=$(git describe --tags --abbrev=0)
-    next=$(next_scalver "$latest")
-    IFS='.' read -r _ prevDate _ <<< "$latest"
-    IFS='.' read -r _ newDate  _ <<< "$next"
-    [[ ${#newDate} -lt ${#prevDate} ]] && {
-        echo "DATE shrink detected; bump MAJOR" >&2
-        exit 1
-    }
-    echo "$next"
-}
-```
-
-*Hook ignores pre‑release/build identifiers; append them afterwards if needed.*
-
----
-
-## **9\. Common Pitfalls & Remedies**
+## **8\. Common Pitfalls & Remedies**
 
 * Shrinking DATE inside a MAJOR line → **forbidden**; bump MAJOR first
 
@@ -151,11 +118,11 @@ git_tag_guard() {
 
 ---
 
-## **10\. FAQ**
+## **9\. FAQ**
 
 * **Can I use ScalVer with Cargo / Maven / npm / Go / Python?** – Yes; all treat `<DATE>` as MINOR, so caret (`^`) and tilde (`~`) ranges still work unchanged.
 
 * **What if we tag `1.202503.0` for March 2025 and later jump to `1.20250225.0`, which looks like the year 202 502 25 A.D.?**  
    *Date cannot be shrunk within a MAJOR line; nonetheless:*  
-   1\. **Y10K perspective** – ScalVer comparisons remain correct with years \> 9999; there’s no intrinsic cap. For interoperability, the reference grammar sticks to four‑digit `YYYY`. Teams needing post‑9999 dating may **(a)** extend the `YYYY` field, or **(b)** bump MAJOR and restart at `YYYY = 0000`.  
+   1\. **Y10K perspective** – ScalVer comparisons remain correct with years \> 9999; there’s no intrinsic cap. For interoperability, the reference grammar sticks to four‑digit `YYYY`. Teams needing post‑9999 dating may **(a)** extend the `YYYY` field (i.e, `YYYYYYYY`), or **(b)** bump MAJOR and restart at `YYYY = 0000`.  
    2\. **ISO‑8601 perspective** – By default we enforce four‑digit years for maximum tooling compatibility. Under this rule `20250225` unambiguously parses to **2025‑02‑25**. A later yearly tag (e.g. the future “**`20250225`**” year example) can’t shrink `DATE` within MAJOR 1
