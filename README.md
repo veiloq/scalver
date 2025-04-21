@@ -1,8 +1,14 @@
 # **Scalable Calendar Versioning Specification v1.2025.5**
 
+1. *SemVer‑compatible* `X.Y.Z`: every ScalVer tag is syntactically valid SemVer, so existing tooling (CI/CD, package managers, release dashboards) works unchanged.
+2. *Calendar‑aware* `X.DATE.Z`: the middle slot is an ISO‑8601 UTC stamp (`YYYY`, `YYYYMM`, or `YYYYMMDD`).
+3. *Extendable* `X.YYYY[MM[DD]].Z`: the date field can grow (year/month/day) or shrink with a new major release.
+
+---
+
 ## **1\. Purpose & Essence**
 
-ScalVer is a **calendar‑aware, SemVer‑compatible and extendable versioning scheme** expressed as
+ScalVer is a **calendar‑aware, SemVer‑compatible and extendable versioning scheme** expressed as `MAJOR.DATE.PATCH`
 
 ```
 <MAJOR>.<DATE>.<PATCH>
@@ -15,6 +21,8 @@ where the `DATE` segment may lengthen over time **within a MAJOR line**: `YYYY` 
 * `<DATE>` – `YYYY`, `YYYYMM`, or `YYYYMMDD` in **UTC**; extends (never shrinks) as release cadence accelerates
 
 * `<PATCH>` – incremental, backward‑compatible fixes within the same DATE window
+
+“Scalable” means the date slot stretches with your pace: start at YYYY, zoom to YYYYMM, YYYYMMDD, or even YYYYMMDDhhmmss as releases accelerate—no tags ever become invalid and normal SemVer ordering still works.
 
 ### **Minimal Grammar (EBNF)**
 
@@ -40,6 +48,8 @@ version = MAJOR "." DATE "." PATCH [ PRE ] [ BUILD ]
 * **Break‑age transparency** → MAJOR still flags incompatible API shifts
 
 * **Single trajectory** → teams glide from yearly to monthly to daily without inventing new numbering schemes
+
+SemVer counts releases, ScalVer dates them — but both stay 100 % syntactically compatible, so your tools don’t notice the swap while your team gains instant calendar context.
 
 ---
 
@@ -75,8 +85,8 @@ Progression path: `YYYY` → `YYYYMM` → `YYYYMMDD`.
 
 ---
 
-MAJOR = 0 → Alpha Track (volatile)
-MAJOR ≥ 1 → Stable Track (guarantees apply; breakage = new major)
+MAJOR = 0 → Alpha, Experiment, PoC (volatile)
+MAJOR ≥ 1 → Stable Release (guarantees apply; breakage = new major)
 
 ---
 
@@ -87,9 +97,9 @@ MAJOR ≥ 1 → Stable Track (guarantees apply; breakage = new major)
 | From | To | Δ DATE | Allowed? | Rationale |
 | ----- | ----- | ----- | ----- | ----- |
 | `1.2025.2` | `1.202503.0` | \+MM | ✓ Yes | Yearly → Monthly – DATE grows (`YYYY` → `YYYYMM`) |
-| `1.202503.3` | `1.20250301.0` | \+DD | ✓ Yes | Monthly → Daily – DATE grows (`YYYYMM` → `YYYYMMDD`) |
+| `1.202507.3` | `1.20250701.0` | \+DD | ✓ Yes | Monthly → Daily – DATE grows (`YYYYMM` → `YYYYMMDD`) |
 | `1.20250301.4` | `1.20250301.5` | \= | ✓ Yes | Daily → Daily – PATCH \+1, DATE unchanged |
-| `1.202503.0` | `1.202503.1` | \= | ✓ Yes | Monthly → Monthly – PATCH \+1 |
+| `1.202510.0` | `1.202510.1` | \= | ✓ Yes | Monthly → Monthly – PATCH \+1 |
 | `1.2025.0` | `1.2025.1` | \= | ✓ Yes | Yearly → Yearly – PATCH \+1 |
 
 ### **Table B – Transitions that shrink DATE or require a MAJOR bump**
@@ -98,7 +108,7 @@ MAJOR ≥ 1 → Stable Track (guarantees apply; breakage = new major)
 | ----- | ----- | ----- | ----- | ----- |
 | `1.20250301.4` | `1.2026.0` | –DD/MM | ✗ No | Bump MAJOR → `2.2026.0` |
 | `1.20250301.4` | `2.2026.0` | reset | ✓ Yes | MAJOR bump resets cadence |
-| `2.20261224.6` | `2.202612.7` | –DD | ✗ No | Keep daily cadence or bump MAJOR |
+| `2.20271225.6` | `2.202712.7` | –DD | ✗ No | Keep daily cadence or bump MAJOR |
 
 *Date-Only-Grows: DATE cannot shrink inside the same MAJOR; a MAJOR bump resets the cadence.*
 
@@ -126,19 +136,7 @@ MAJOR ≥ 1 → Stable Track (guarantees apply; breakage = new major)
 
 ---
 
-## **8\. Migration Strategies**
-
-* **Greenfield project** – start with `0.YYYY.0` internally; switch to `1.<current‑year>.0` at first public release
-
-* **Existing SemVer project** – translate `X.Y.Z` → `X.<current‑year>.Z`; keep MAJOR intact
-
-* **Accelerating cadence** – extend DATE length (DOG‑compliant) without changing MAJOR
-
-* **Tooling** – have CI derive DATE in **UTC** and fail builds that regress the DATE segment
-
----
-
-## **9\. Common Pitfalls & Remedies**
+## **8\. Common Pitfalls & Remedies**
 
 * Shrinking DATE inside a MAJOR line → **forbidden**; bump MAJOR first
 
@@ -148,6 +146,49 @@ MAJOR ≥ 1 → Stable Track (guarantees apply; breakage = new major)
 
 * Patching a *previous* date after cadence acceleration → use a maintenance branch, tag on the frozen DATE (e.g. `1.202401.5`)
 
+## **9. Migration**
+
+ScalVer migration is expected to be trivial in most of the cases, since every ScalVer tag is valid SemVer. The heavy lift is mostly *communication*.
+
+
+### 9.1 Playbook
+
+---
+
+#### 9.1.1 Quick path (most projects)
+
+1. **Choose calendar width** — `YYYY`, `YYYYMM`, or `YYYYMMDD`.  
+2. **Reset PATCH** to `0`.  
+3. **Keep MAJOR** unless you also break the API.  
+4. **Publish** `MAJOR.DATE.0`.
+
+---
+
+### 9.1.2 Guard against legacy *minor* overflows
+
+1. `maxMinor = max(X in MAJOR.X.Y)`  
+2. Compute today’s `DATE`.  
+3. Compare  
+   * **DATE > maxMinor** → tag `MAJOR.DATE.0`.  
+   * **DATE ≤ maxMinor** →  
+     *A.* **Widen DATE** (`YYYYMM`, `YYYYMMDD`, …) until it beats `maxMinor`, **or**  
+     *B.* **Increment MAJOR** and tag `newMAJOR.DATE.0`.
+
+> **Note** Option B (incrementing MAJOR) may be unacceptable in ecosystems where MAJOR is tightly coupled to compatibility promises or installer heuristics. Prefer widening the DATE slot whenever possible; choose a MAJOR bump only when all stakeholders agree it won’t disrupt dependency resolution policies.
+
+### 9.2 Migration Examples
+
+| Format                         | New Variant      | Length¹ | Δ vs `1.23.5` | Label                                                   |
+|--------------------------------|------------------|---------|--------------|---------------------------------------------------------|
+| `xMAJOR.YYYY.xPATCH`           | `1.2025.5`       | 8       | +2           | Major & Patch preserved; **Year replaces Minor**        |
+| `xMAJOR.YYYYMM.xPATCH`         | `1.202504.5`     | 10      | +4           | Major & Patch preserved; **Year‑Month replaces Minor**  |
+| `xMAJOR.YYYYMMDD.xPATCH`       | `1.20250421.5`   | 12      | +6           | Major & Patch preserved; **Y‑M‑D replaces Minor**       |
+| `xMAJOR.YYYY.xMINORxPATCH`     | `1.2025.235`     | 10      | +4           | Major preserved; **Minor & Patch concatenated**         |
+| `xMINOR.YYYY.PATCH`            | `23.2025.0`      | 9       | +3           | **Minor promoted to leading segment; Major dropped**    |
+| `xMINOR.YYYY.PATCH`            | `23.2025.5`      | 9       | +3           | **Minor promoted to leading segment; Major dropped; Patch preserved**    |
+
+¹ **Log & storage overhead example** (**assuming (1) one‑byte UTF‑8 characters and (2) no compression/deduplication**): a +6 variant could inflates log lines by 6 MB per million tags and consumes 6 MB more disk per million stored records.
+
 ---
 
 ## **10\. FAQ**
@@ -155,6 +196,6 @@ MAJOR ≥ 1 → Stable Track (guarantees apply; breakage = new major)
 * **Can I use ScalVer with Cargo / Maven / npm / Go / Python?** – Yes; all treat `<DATE>` as MINOR, so caret (`^`) and tilde (`~`) ranges still work unchanged.
 
 * **What if we tag `1.202503.0` for March 2025 and later jump to `1.20250225.0`, which looks like the year 202 502 25 A.D.?**  
-   *Date cannot be shrunk within a MAJOR line; nonetheless:*  
+   *Within a MAJOR line, the DATE segment may grow but must never shrink; you can shorten it only after bumping to a new MAJOR version (see 5); nonetheless:*  
    1\. **Y10K perspective** – ScalVer comparisons remain correct with years \> 9999; there’s no intrinsic cap. For interoperability, the reference grammar sticks to four‑digit `YYYY`. Teams needing post‑9999 dating may **(a)** extend the `YYYY` field (i.e, `YYYYYYYY`), or **(b)** bump MAJOR and restart at `YYYY = 0000`.  
    2\. **ISO‑8601 perspective** – By default we enforce four‑digit years for maximum tooling compatibility. Under this rule `20250225` unambiguously parses to **2025‑02‑25**. A later yearly tag (e.g. the future “**`20250225`**” year example) can’t shrink `DATE` within MAJOR 1
