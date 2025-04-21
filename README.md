@@ -152,7 +152,7 @@ ScalVer migration is expected to be trivial in most of the cases, since every Sc
 
 ---
 
-### 9.1.2 Guard against legacy *minor* overflows
+#### 9.1.2 Guard against legacy *minor* overflows
 
 1. `maxMinor = max(X in MAJOR.X.Y)`  
 2. Compute today’s `DATE`.  
