@@ -1,4 +1,4 @@
-# **ScalVer Specification v1.2025.5**
+# **Scalable Calendar Versioning (ScalVer) Specification v1.2025.5**
 
 ## **1\. Purpose & Essence**
 
