@@ -127,14 +127,14 @@ Because every ScalVer tag is syntactically valid SemVer, most projects can keep 
 
 ### 7\.2 Playbook
 
-#### 7\.2\.1 Quick path (most projects)
+**7.2.1 Quick path (most projects):**
 
 1. **Choose calendar width** — `YYYY`, `YYYYMM`, or `YYYYMMDD`.  
 2. **Reset PATCH** to `0`.  
 3. **Keep MAJOR** unless you also break the API.  
 4. **Publish** `MAJOR.DATE.0`.
 
-#### 7\.2\.2 Guard against legacy *minor* overflows
+**7.2.2 Guard against legacy *minor* overflows:**
 
 1. `maxMinor = max(X in MAJOR.X.PATCH)`  
 2. Compute today’s `DATE` (`YYYYMMDD` or `YYYYMM` or `YYYY`).  
