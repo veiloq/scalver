@@ -105,21 +105,13 @@ where the `DATE` segment may lengthen over time **within a MAJOR line**: `YYYY` 
 
 ---
 
-## **7\. End‑of‑Life (EOL) Markers**
-
-* `1.99999999.0` – freezes the *entire* 1.x line (year upper‑bound \= 9999; 9999_99_99 acts as sentinel)
-
-* `2.2026.0` – resumes normal dating under MAJOR 2
-
----
-
-## **8. Migration**
+## **7. Migration**
 
 Because every ScalVer tag is syntactically valid SemVer, most projects can keep their existing tooling unchanged or with only minimal tweaks.
 
 ---
 
-### 8.1  SemVer → ScalVer Example
+### 7.1  SemVer → ScalVer Example
 
 | Format                         | New Variant      | Length¹ | Δ vs `1.23.5` | Conversion                                             |
 |--------------------------------|------------------|---------|--------------|---------------------------------------------------------|
@@ -133,11 +125,11 @@ Because every ScalVer tag is syntactically valid SemVer, most projects can keep 
 ¹ **Log & storage overhead example** (**assuming (1) one‑byte UTF‑8 characters and (2) no compression/deduplication**): a +6 variant could inflates log lines by 6 MB per million tags and consumes 6 MB more disk per million stored records.
 
 
-### 8.2 Playbook
+### 7.2 Playbook
 
 ---
 
-#### 8.2.1 Quick path (most projects)
+#### 7.2.1 Quick path (most projects)
 
 1. **Choose calendar width** — `YYYY`, `YYYYMM`, or `YYYYMMDD`.  
 2. **Reset PATCH** to `0`.  
@@ -146,7 +138,7 @@ Because every ScalVer tag is syntactically valid SemVer, most projects can keep 
 
 ---
 
-#### 8.2.2 Guard against legacy *minor* overflows
+#### 7.2.2 Guard against legacy *minor* overflows
 
 1. `maxMinor = max(X in MAJOR.X.PATCH)`  
 2. Compute today’s `DATE` (`YYYYMMDD` or `YYYYMM` or `YYYY`).  
@@ -158,7 +150,7 @@ Because every ScalVer tag is syntactically valid SemVer, most projects can keep 
 
 ---
 
-## **10\. FAQ**
+## **9\. FAQ**
 
 * **Can I use ScalVer with Cargo / Maven / npm / Go / Python?** – Yes; all treat `<DATE>` as MINOR, so caret (`^`) and tilde (`~`) ranges still work unchanged.
 
