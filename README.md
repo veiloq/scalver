@@ -105,13 +105,13 @@ where the `DATE` segment may lengthen over time **within a MAJOR line**: `YYYY` 
 
 ---
 
-## **7. Migration**
+## **7\. Migration**
 
 Because every ScalVer tag is syntactically valid SemVer, most projects can keep their existing tooling unchanged or with only minimal tweaks.
 
 ---
 
-### 7.1  SemVer → ScalVer Example
+### 7\.1  SemVer → ScalVer Example
 
 | Format                         | New Variant      | Length¹ | Δ vs `1.23.5` | Conversion                                             |
 |--------------------------------|------------------|---------|--------------|---------------------------------------------------------|
@@ -125,20 +125,16 @@ Because every ScalVer tag is syntactically valid SemVer, most projects can keep 
 ¹ **Log & storage overhead example** (**assuming (1) one‑byte UTF‑8 characters and (2) no compression/deduplication**): a +6 variant could inflates log lines by 6 MB per million tags and consumes 6 MB more disk per million stored records.
 
 
-### 7.2 Playbook
+### 7\.2 Playbook
 
----
-
-#### 7.2.1 Quick path (most projects)
+#### 7\.2\.1 Quick path (most projects)
 
 1. **Choose calendar width** — `YYYY`, `YYYYMM`, or `YYYYMMDD`.  
 2. **Reset PATCH** to `0`.  
 3. **Keep MAJOR** unless you also break the API.  
 4. **Publish** `MAJOR.DATE.0`.
 
----
-
-#### 7.2.2 Guard against legacy *minor* overflows
+#### 7\.2\.2 Guard against legacy *minor* overflows
 
 1. `maxMinor = max(X in MAJOR.X.PATCH)`  
 2. Compute today’s `DATE` (`YYYYMMDD` or `YYYYMM` or `YYYY`).  
@@ -150,7 +146,7 @@ Because every ScalVer tag is syntactically valid SemVer, most projects can keep 
 
 ---
 
-## **9\. FAQ**
+## **8\. FAQ**
 
 * **Can I use ScalVer with Cargo / Maven / npm / Go / Python?** – Yes; all treat `<DATE>` as MINOR, so caret (`^`) and tilde (`~`) ranges still work unchanged.
 
