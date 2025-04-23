@@ -113,47 +113,13 @@ where the `DATE` segment may lengthen over time **within a MAJOR line**: `YYYY` 
 
 ---
 
-## **8\. Common Pitfalls & Remedies**
+## **8. Migration**
 
-* Shrinking DATE inside a MAJOR line → **forbidden**; bump MAJOR first
-
-* Dropping back from daily to monthly cadence → bump MAJOR to reset DATE granularity
-
-* Using local timezone in CI → inject DATE via `date -u` or similar UTC source
-
-* Patching a *previous* date after cadence acceleration → use a maintenance branch, tag on the frozen DATE (e.g. `1.202401.5`)
-
-## **9. Migration**
-
-ScalVer migration is expected to be trivial in most of the cases, since every ScalVer tag is valid SemVer. The heavy lift is mostly *communication*.
-
-### 9.1 Playbook
+Because every ScalVer tag is syntactically valid SemVer, most projects can keep their existing tooling unchanged or with only minimal tweaks.
 
 ---
 
-#### 9.1.1 Quick path (most projects)
-
-1. **Choose calendar width** — `YYYY`, `YYYYMM`, or `YYYYMMDD`.  
-2. **Reset PATCH** to `0`.  
-3. **Keep MAJOR** unless you also break the API.  
-4. **Publish** `MAJOR.DATE.0`.
-
----
-
-#### 9.1.2 Guard against legacy *minor* overflows
-
-1. `maxMinor = max(X in MAJOR.X.Y)`  
-2. Compute today’s `DATE`.  
-3. Compare  
-   * **DATE > maxMinor** → tag `MAJOR.DATE.0`.  
-   * **DATE ≤ maxMinor** →  
-     *A.* **Widen DATE** (`YYYYMM`, `YYYYMMDD`, …) until it beats `maxMinor`, **or**  
-     *B.* **Increment MAJOR** and tag `newMAJOR.DATE.0`.
-
-> **Note** Option B (incrementing MAJOR) may be unacceptable in ecosystems where MAJOR is tightly coupled to compatibility promises or installer heuristics. Prefer widening the DATE slot whenever possible; choose a MAJOR bump only when all stakeholders agree it won’t disrupt dependency resolution policies.
-
-### 9.2  SemVer → ScalVer Example
-
+### 8.1  SemVer → ScalVer Example
 
 | Format                         | New Variant      | Length¹ | Δ vs `1.23.5` | Conversion                                             |
 |--------------------------------|------------------|---------|--------------|---------------------------------------------------------|
@@ -166,6 +132,30 @@ ScalVer migration is expected to be trivial in most of the cases, since every Sc
 
 ¹ **Log & storage overhead example** (**assuming (1) one‑byte UTF‑8 characters and (2) no compression/deduplication**): a +6 variant could inflates log lines by 6 MB per million tags and consumes 6 MB more disk per million stored records.
 
+
+### 8.2 Playbook
+
+---
+
+#### 8.2.1 Quick path (most projects)
+
+1. **Choose calendar width** — `YYYY`, `YYYYMM`, or `YYYYMMDD`.  
+2. **Reset PATCH** to `0`.  
+3. **Keep MAJOR** unless you also break the API.  
+4. **Publish** `MAJOR.DATE.0`.
+
+---
+
+#### 8.2.2 Guard against legacy *minor* overflows
+
+1. `maxMinor = max(X in MAJOR.X.PATCH)`  
+2. Compute today’s `DATE` (`YYYYMMDD` or `YYYYMM` or `YYYY`).  
+3. Compare  
+   * **DATE > maxMinor** → tag `MAJOR.DATE.0`.  
+   * **DATE ≤ maxMinor** → **Increment MAJOR** and tag `newMAJOR.DATE.0`.
+
+> **Note** Option B (incrementing MAJOR) may be unacceptable in ecosystems where MAJOR is tightly coupled to compatibility promises or installer heuristics. Prefer widening the DATE slot whenever possible; choose a MAJOR bump only when all stakeholders agree it won’t disrupt dependency resolution policies.
+
 ---
 
 ## **10\. FAQ**
@@ -176,3 +166,5 @@ ScalVer migration is expected to be trivial in most of the cases, since every Sc
    *Within a MAJOR line, the DATE segment may grow but must never shrink; you can shorten it only after bumping to a new MAJOR version (see 5); nonetheless:*  
    1\. **Y10K perspective** – ScalVer comparisons remain correct with years \> 9999; there’s no intrinsic cap. For interoperability, the reference grammar sticks to four‑digit `YYYY`. Teams needing post‑9999 dating may **(a)** extend the `YYYY` field (i.e, `YYYYYYYY`), or **(b)** bump MAJOR and restart at `YYYY = 0000`.  
    2\. **ISO‑8601 perspective** – By default we enforce four‑digit years for maximum tooling compatibility. Under this rule `20250225` unambiguously parses to **2025‑02‑25**. A later yearly tag (e.g. the future “**`20250225`**” year example) can’t shrink `DATE` within MAJOR 1
+
+* **Is ScalVer an extension of SemVer?** – No. ScalVer tags are a syntactic subset of SemVer, yet they intentionally diverge semantically by repurposing the MINOR field as a calendar date.
