@@ -2,7 +2,7 @@
 
 TLDR: `1.2025.5 < 1.20250323.0 < 2.2025.0 < 2.202503.1 < 2.20250125.1`
 
-## **1\. Purpose & Essence**
+## **1\. Purpose & Core Concept**
 
 ScalVer is a **calendar‑aware, SemVer‑compatible and extendable versioning scheme** expressed as
 
@@ -12,19 +12,19 @@ ScalVer is a **calendar‑aware, SemVer‑compatible and extendable versioning s
 
 where the `DATE` segment may lengthen over time **within a MAJOR line**: `YYYY` → `YYYYMM` → `YYYYMMDD` (`YYYY[MM[DD]]`)
 
-* `<MAJOR>` – identical to SemVer MAJOR, bumped for breaking changes **or** whenever the DATE segment would need to shrink.
+* **`<MAJOR>`** — mirrors SemVer’s MAJOR component; incremented for *breaking-change* releases **or** whenever the `DATE` segment would otherwise need to contract.
 
-* `<DATE>` – `YYYY`, `YYYYMM`, or `YYYYMMDD` in **UTC**; extends as release cadence accelerates or shrink with a new MAJOR release.
+* **`<DATE>`** — expressed as `YYYY`, `YYYYMM`, or `YYYYMMDD` in **UTC**; it may *stay the same width* or *expand* (year → month → day) as release cadence accelerates, and it resets to its initial width when the next MAJOR version begins.
 
-* `<PATCH>` – incremental, backward‑compatible fixes within the same DATE window.
+* **`<PATCH>`** — mirrors SemVer’s PATCH component; a monotonically increasing counter for backward-compatible updates released within the same `DATE` window.
 
 ---
 
-## **2\. Why ScalVer (Scalable Calendar Versioning)?**
+## **2\. Motivation**
 
  ScalVer provides the time-based clarity of CalVer (knowing when something was released) while needing the compatibility guarantees and tooling support of SemVer (knowing if an update breaks things).
 
-* **Flexibility**: ScalVer allows projects to adjust their release frequency (yearly, monthly, daily) and reflect this in the versioning without breaking the logical version order. 
+* **Adjustable cadence** : ScalVer allows projects to adjust their release frequency (yearly, monthly, daily) and reflect this in the versioning without breaking the logical version order. 
 
 * **SemVer Compatibility**: every ScalVer tag is syntactically valid SemVer, so existing tooling (CI/CD, package managers, release dashboards) works unchanged.
 
@@ -107,7 +107,7 @@ where the `DATE` segment may lengthen over time **within a MAJOR line**: `YYYY` 
 
 ## **7\. End‑of‑Life (EOL) Markers**
 
-* `1.999999.0` – freezes the *entire* 1.x line (year upper‑bound \= 9999; 999 999 acts as sentinel)
+* `1.99999999.0` – freezes the *entire* 1.x line (year upper‑bound \= 9999; 9999_99_99 acts as sentinel)
 
 * `2.2026.0` – resumes normal dating under MAJOR 2
 
