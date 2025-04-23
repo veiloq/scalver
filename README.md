@@ -22,12 +22,11 @@ where the `DATE` segment may lengthen over time **within a MAJOR line**: `YYYY` 
 
 ## **2\. Why ScalVer (Scalable Calendar Versioning)?**
 
-\~ It’s a simple adaptation of **CalVer** that remains fully compatible with **SemVer**, but lets you switch release frequencies without messing up version ordering.
+ ScalVer provides the time-based clarity of CalVer (knowing when something was released) while needing the compatibility guarantees and tooling support of SemVer (knowing if an update breaks things).
 
-* **Built‑in timestamp** → each tag encodes its release date (ISO‑8601 UTC stamp).
-* **Break‑age transparency** → MAJOR still flags incompatible API shifts.
-* **Frequency‑proof** extendable format → one schema scales from annual releases to rapid daily drops.
-* **SemVer Compatible**  → every ScalVer tag is syntactically valid SemVer, so existing tooling (CI/CD, package managers, release dashboards) works unchanged.
+* **Flexibility**: ScalVer allows projects to adjust their release frequency (yearly, monthly, daily) and reflect this in the versioning without breaking the logical version order. 
+
+* **SemVer Compatibility**: every ScalVer tag is syntactically valid SemVer, so existing tooling (CI/CD, package managers, release dashboards) works unchanged.
 
 ---
 
@@ -44,19 +43,6 @@ where the `DATE` segment may lengthen over time **within a MAJOR line**: `YYYY` 
 **Date‑Only‑Grows (DOG):** within any single MAJOR line the DATE can stay the same length or grow, but **never shrink**.
 
 ¹**Y10K note:** ScalVer’s ordering logic continues to work for years beyond 9999. The reference grammar intentionally limits YYYY to four digits for ISO‑8601 clarity and broad tooling support, but the scheme is formally 100% compatible with longer year fields and can be widened whenever ecosystems catch up.
-
-### **Minimal Grammar (EBNF)**
-
-```
-MAJOR = digit *digit  ; 0 = volatile, 1+ = stable API
-DATE    = YYYY | YYYYMM | YYYYMMDD      ; UTC calendar date
-PATCH   = non‑negative digit *digit
-PRE     = ( "-" identifier *( "." identifier ) ) ; optional
-BUILD   = ( "+" identifier *( "." identifier ) ) ; optional
-version = MAJOR "." DATE "." PATCH [ PRE ] [ BUILD ]
-```
-
-*identifier* follows [SemVer 2.0 rules](https://semver.org/).
 
 ---
 
