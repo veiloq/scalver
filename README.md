@@ -70,7 +70,7 @@ where the `DATE` segment may lengthen over time **within a MAJOR line**: `YYYY` 
 
 ### **3.2 Full ScalVer BNF Grammar**
 
-The complete ScalVer grammar is available in the [GRAMMAR](./GRAMMAR) file for reference and implementation.
+The complete ScalVer grammar is available in the [BNF](./BNF) file for reference and implementation.
 
 ---
 
