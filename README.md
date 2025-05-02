@@ -184,3 +184,8 @@ Because every ScalVer tag is syntactically valid SemVer, most projects can keep 
    2\. **ISO‑8601 perspective** – By default we enforce four‑digit years for maximum tooling compatibility. Under this rule `20250225` unambiguously parses to **2025‑02‑25**. A later yearly tag (e.g. the future “**`20250225`**” year example) can’t shrink `DATE` within MAJOR 1
 
 * **Is ScalVer an extension of SemVer?** – No. ScalVer tags are a syntactic subset of SemVer, yet they intentionally diverge semantically by repurposing the MINOR field as a calendar date.
+
+## 9. Acknowledgements
+
+* ScalVer’s versioning aligns closely with the scheme used by
+  [PlantUML](https://plantuml.com/) ([plantuml/plantuml](https://github.com/plantuml/plantuml)). We thank **Arnaud Roques** for kindly permitting us to cite PlantUML as a practical precedent.
