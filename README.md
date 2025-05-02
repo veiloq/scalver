@@ -51,7 +51,7 @@ where the `DATE` segment may lengthen over time **within a MAJOR line**: `YYYY` 
 +++ SemVer2.0.bnf
 @@
 -<version core> ::= <major> "." <minor> "." <patch>
-+<version core>  ::= <major> "." <date> "." <patch>
++<version core> ::= <major> "." <date> "." <patch>
 @@
 -<minor> ::= <numeric identifier>
 +
@@ -187,5 +187,4 @@ Because every ScalVer tag is syntactically valid SemVer, most projects can keep 
 
 ## 9. Acknowledgements
 
-* ScalVer’s versioning aligns closely with the scheme used by
-  [PlantUML](https://plantuml.com/) ([plantuml/plantuml](https://github.com/plantuml/plantuml)). We thank **Arnaud Roques** for kindly permitting us to cite PlantUML as a practical precedent.
+* ScalVer's versioning aligns closely with the scheme used by [plantuml/plantuml](https://github.com/plantuml/plantuml), [plantuml.com](https://plantuml.com/). We thank **Arnaud Roques** for kindly permitting us to cite PlantUML as a practical precedent.
