@@ -24,7 +24,7 @@ where the `DATE` segment may lengthen over time **within a MAJOR line**: `YYYY` 
 
  ScalVer provides the time-based clarity of CalVer (knowing when something was released) while needing the compatibility guarantees and tooling support of SemVer (knowing if an update breaks things).
 
-* **Adjustable cadence** : ScalVer allows projects to adjust their release frequency (yearly, monthly, daily) and reflect this in the versioning without breaking the logical version order. 
+* **Adjustable cadence**: ScalVer allows projects to adjust their release frequency (yearly, monthly, daily) and reflect this in the versioning without breaking the logical version order. 
 
 * **SemVer Compatibility**: every ScalVer tag is syntactically valid SemVer, so existing tooling (CI/CD, package managers, release dashboards) works unchanged.
 
@@ -47,9 +47,6 @@ where the `DATE` segment may lengthen over time **within a MAJOR line**: `YYYY` 
 ### **3\.1 Difference with SemVer Backus–Naur Form Grammar**
 
 ```diff
---- SemVer2.0.bnf
-+++ SemVer2.0.bnf
-@@
 -<version core> ::= <major> "." <minor> "." <patch>
 +<version core> ::= <major> "." <date> "." <patch>
 @@
